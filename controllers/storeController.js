@@ -49,7 +49,6 @@ exports.resize = async(req, res, next) => {
 }
 
 exports.createStore = async (req, res) => {
-  console.log("createStore**********")
   console.log(req.body)
   const store = await (new Store(req.body)).save();
   //console.log("trying to save :", req.body)
@@ -90,4 +89,11 @@ exports.updateStore = async(req, res) => {
   req.flash('success', `Successfully updated ${store.name} <a href=/stores/${store.slug}>Go To Store</a>`)
   res.redirect(`/stores/${store._id}/edit`);
   //redirect them to the store and tell them it worked
+}
+
+exports.getStoresByTag = async(req, res) => {
+  const tags = await Store.getTagsList()
+  const tag = req.params.tag
+  res.render('tags', { tags, tag, title: 'Tags'});
+
 }
