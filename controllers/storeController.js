@@ -92,8 +92,16 @@ exports.updateStore = async(req, res) => {
 }
 
 exports.getStoresByTag = async(req, res) => {
-  const tags = await Store.getTagsList()
   const tag = req.params.tag
-  res.render('tags', { tags, tag, title: 'Tags'});
+  // the second param here... if there is no specified tag.. just return any store that has a tag prop on it
+  const tagQuery = tag || { $exists: true };
+  // const tags = await Store.getTagsList()
+  // note: in making muliptly calls effeciently - we want to keep async
+  // * i.e. need to remove await method & store using promise object
+  const tagsPromise = Store.getTagsList();
+  const storesPromise = Store.find({ tags: tagQuery });
+  // wait until we get our object back to assign to var and template
+  const [ tags, stores ] = await Promise.all([tagsPromise, storesPromise]);
+  res.render('tags', { tags, tag, stores, title: 'Tags'});
 
 }
