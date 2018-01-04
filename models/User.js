@@ -21,7 +21,16 @@ const userSchema = new mongoose.Schema({
     required: 'Please Supply a name',
     trim: true,
   },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 });
+
+// virtual field is generated when you call with dot notation.  has get or set function...
+//gravatar hashes email with md5
+userSchema.virtual('gravatar').get(function(){
+  const hash = md5(this.email);
+  return `https://gravatar.com/avatar/${hash}?s=200`;
+})
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email'});
 userSchema.plugin(mongodbErrorHandler);
