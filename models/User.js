@@ -15,12 +15,12 @@ const userSchema = new mongoose.Schema({
     trim: true,
     validate: [validator.isEmail, 'Invalid Email Address'],
     required: 'Please Supply an email address',
-  }
+  },
   name:{
     type: String,
     required: 'Please Supply a name',
     trim: true,
-  }
+  },
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email'});
