@@ -21,11 +21,7 @@ exports.validateRegister = (req, res, next) => {
   req.sanitizeBody('name');
   req.checkBody('name', 'You must supply a name!').notEmpty();
   req.checkBody('email', 'That Email is not valid!').isEmail();
-  req.sanitizeBody('email').normalizeEmail({
-    remove_dots: false,
-    remove_extension: false,
-    gmail_remove_subaddress: false
-  });
+  req.sanitizeBody('email');
   req.checkBody('password', 'password cannot be blank!').notEmpty();
   req.checkBody('password-confirm', 'confirmed password cannot be blank!').notEmpty();
   req.checkBody('password-confirm', 'Oops! Your passwords do not match').equals(req.body.password);
