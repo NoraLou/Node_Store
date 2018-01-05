@@ -49,7 +49,7 @@ exports.resize = async(req, res, next) => {
 }
 
 exports.createStore = async (req, res) => {
-  console.log(req.body)
+  req.body.author = req.user._id;
   const store = await (new Store(req.body)).save();
   //console.log("trying to save :", req.body)
   // console.log("it worked")
