@@ -128,3 +128,24 @@ exports.getStoresByTag = async(req, res) => {
   res.render('tags', { tags, tag, stores, title: 'Tags'});
 
 }
+
+
+exports.searchStores = async (req, res) => {
+  // test/view query params from url
+  //res.json(req.query);
+  // bc have indexed name and description of our store via text... search mongo db with the $text operator
+  const stores = await Store.find({
+    //search text for the query
+    $text: {
+      $search: req.query.q,
+    }
+    //add a score field based on the occurance of the query word
+  }, {
+    score: { $meta: 'textScore' }
+    // sort data by frequency of occurance of query
+  }).sort({
+    score: { $meta: 'textScore'}
+  })
+  res.json(stores)
+
+}

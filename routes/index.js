@@ -47,4 +47,11 @@ router.get('/logout', authController.logout);
 router.get('/account', authController.isLoggedIn, userController.account);
 router.post('/account', catchErrors(userController.updateAccount));
 
+/*
+ API ENDPOINTS
+*/
+
+router.get('/api/search', catchErrors(storeController.searchStores))
+
+
 module.exports = router;
