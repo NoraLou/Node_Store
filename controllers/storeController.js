@@ -48,14 +48,27 @@ exports.resize = async(req, res, next) => {
   next();
 }
 
+// exports.createStore = async (req, res) => {
+//   req.body.author = req.user._id;
+//   console.log('req.body.author :', req.body.author)
+//   const store = await (new Store(req.body)).save();
+//   //console.log("trying to save :", req.body)
+//   // console.log("it worked")
+//   req.flash('success', `Successfully Created ${store.name} Care to Leave a Review?`);
+//   res.redirect(`/store/${store.slug}`);
+// };
+
 exports.createStore = async (req, res) => {
-  console.log(req.body)
+  req.body.author = req.user._id;
   const store = await (new Store(req.body)).save();
-  //console.log("trying to save :", req.body)
-  // console.log("it worked")
-  req.flash('success', `Successfully Created ${store.name} Care to Leave a Review?`);
-  res.redirect(`/store/${store.slug}`);
+  //TO DO : this is running asynchrosouly... before store is saved and gives a 404 error...
+  // req.flash('success', `Successfully Created ${store.name}. Care to leave a review?`))
+  // res.redirect(`/store/${store.slug}`)
+  req.flash('success', `Successfully Created ${store.name}. Care to leave a review?`)
+  res.redirect(`/stores`)
+
 };
+
 
 exports.getStores = async (req, res) => {
   const stores = await (Store.find());
