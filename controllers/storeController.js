@@ -75,8 +75,11 @@ exports.getStores = async (req, res) => {
   res.render('stores', { title: 'Stores', stores });
 }
 
+
 exports.getStoreBySlug = async (req, res, next) => {
+  //Note the populate method... populates with data from cross association with author id
   const store = await Store.findOne({slug: req.params.storeSlug})
+    .populate('author')
   if (!store) {
     next();
     return;
@@ -84,9 +87,16 @@ exports.getStoreBySlug = async (req, res, next) => {
   res.render('store', {title:`${store.name}`, store});
 }
 
+const confirmOwner = (store, user) => {
+  //Note the .equals() meth - necessary to make a comparision btwn mongo ObjectId and user_id
+  if ( !store.author.equals(user._id)){
+    throw Error ('you must own a store in order to edit it')
+  }
+}
 
 exports.editStore = async(req, res) => {
   const store = await Store.findOne({ _id: req.params.id});
+  confirmOwner(store, req.user)
   res.render('editStore', { title: `Edit ${store.name}`, store });
 }
 

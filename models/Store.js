@@ -43,6 +43,15 @@ const storeSchema = new mongoose.Schema({
 
 });
 
+//Define our Index
+storeSchema.index({
+  name: 'text',
+  description: 'text'
+})
+
+
+
+
 storeSchema.pre('save', async function(next) {
   if (!this.isModified('name')){
     // if we haven't changed the name, already have a name and corresponding slug, no need to run this... move on to the save function
