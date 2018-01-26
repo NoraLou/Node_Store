@@ -1,6 +1,7 @@
 node_modules/
 build/
 public/images/photos
+public/uploads
 
 # misc
 **/.DS_Store
