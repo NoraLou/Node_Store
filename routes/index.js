@@ -46,12 +46,14 @@ router.get('/logout', authController.logout);
 
 router.get('/account', authController.isLoggedIn, userController.account);
 router.post('/account', catchErrors(userController.updateAccount));
+router.get('/map', storeController.mapPage)
 
 /*
  API ENDPOINTS
 */
 
 router.get('/api/search', catchErrors(storeController.searchStores))
+router.get('/api/stores/near', catchErrors(storeController.mapStores))
 
 
 module.exports = router;

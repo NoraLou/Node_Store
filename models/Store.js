@@ -43,14 +43,17 @@ const storeSchema = new mongoose.Schema({
 
 });
 
-//Define our Index
+//Define our Indexs
 storeSchema.index({
   name: 'text',
   description: 'text'
 })
 
+storeSchema.index({ location: '2dsphere' });
 
 
+
+//TODO.. add some more validation.
 
 storeSchema.pre('save', async function(next) {
   if (!this.isModified('name')){
