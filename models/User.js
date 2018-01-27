@@ -21,6 +21,9 @@ const userSchema = new mongoose.Schema({
     required: 'Please Supply a name',
     trim: true,
   },
+  hearts: [
+    { type: mongoose.Schema.ObjectId, ref: 'Store' }
+  ]
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email'});
