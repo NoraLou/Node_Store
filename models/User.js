@@ -21,8 +21,9 @@ const userSchema = new mongoose.Schema({
     required: 'Please Supply a name',
     trim: true,
   },
-  resetPasswordToken: String,
-  resetPasswordExpires: Date
+  hearts: [
+    { type: mongoose.Schema.ObjectId, ref: 'Store' }
+  ]
 });
 
 // virtual field is generated when you call with dot notation.  has get or set function...

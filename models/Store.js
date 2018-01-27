@@ -42,6 +42,18 @@ const storeSchema = new mongoose.Schema({
   }
 });
 
+//Define our Indexs
+storeSchema.index({
+  name: 'text',
+  description: 'text'
+})
+
+storeSchema.index({ location: '2dsphere' });
+
+
+
+//TODO.. add some more validation.
+
 storeSchema.pre('save', async function(next) {
   if (!this.isModified('name')){
     // if we haven't changed the name, already have a name and corresponding slug, no need to run this... move on to the save function

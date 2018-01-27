@@ -77,29 +77,39 @@ exports.confirmedPasswords = (req, res, next) => {
   res.redirect('back');
 }
 
-exports.updatePassword = async (req, res) =>{
-  const user = await User.findOne({
-    resetPasswordToken: req.params.token,
-    // token expires at a time greater than now..
-    resetPasswordExpires: { $gt: Date.now() }
-  });
-  if (!user){
-    req.flash('error', 'password reset is invalid or has expired')
-    return res.redirect('/login');
+// exports.updatePassword = async (req, res) =>{
+//   const user = await User.findOne({
+//     resetPasswordToken: req.params.token,
+//     // token expires at a time greater than now..
+//     resetPasswordExpires: { $gt: Date.now() }
+//   });
+//   if (!user){
+//     req.flash('error', 'password reset is invalid or has expired')
+//     return res.redirect('/login');
+//   }
+
+//   //setPassword function is from require('passport-local-mongoose')
+//   const setPassword = promisify( user.setPassword, user);
+//   await setPassword(req.body.password);
+//   // remoeve the reset tokens & expiry by setting to undefined
+//   user.resetPasswordToken = undefined;
+//   user.resetPasswordExpires = undefined;
+//   // save all these changes
+//   const updatedUser = await user.save();
+//   //auto log them in
+//   await req.login(updatedUser);
+//   req.flash('success', 'Your password has been reset and you are  now logged in')
+//   res.redirect('/');
+
+// }
+
+
+exports.isLoggedIn = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    next();
+    return;
   }
-
-  //setPassword function is from require('passport-local-mongoose')
-  const setPassword = promisify( user.setPassword, user);
-  await setPassword(req.body.password);
-  // remoeve the reset tokens & expiry by setting to undefined
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpires = undefined;
-  // save all these changes
-  const updatedUser = await user.save();
-  //auto log them in
-  await req.login(updatedUser);
-  req.flash('success', 'Your password has been reset and you are  now logged in')
-  res.redirect('/');
-
-}
+  req.flash('error', 'Oops you must be logged in to do that!');
+  res.redirect('/login');
+};
 

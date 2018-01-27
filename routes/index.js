@@ -7,6 +7,7 @@ const { catchErrors } = require('../handlers/errorHandlers');
 
 router.get('/', catchErrors(storeController.getStores));
 router.get('/stores', catchErrors(storeController.getStores));
+
 router.get('/add', authController.isLoggedIn, storeController.addStore);
 
 router.post('/add',
@@ -27,9 +28,10 @@ router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
 router.get('/tags', catchErrors(storeController.getStoresByTag));
 router.get('/tags/:tag', catchErrors(storeController.getStoresByTag));
 
-router.get('/login', userController.loginForm);
+router.get('/login', userController.loginForm)
 router.post('/login', authController.login);
-router.get('/register', userController.registerForm);
+router.get('/register', userController.registerForm)
+
 
 // 1. Validate the registration data
 // 2. register the user
@@ -53,5 +55,20 @@ router.post('/account/reset/:token',
   authController.confirmedPasswords,
   catchErrors(authController.updatePassword)
 )
+
+router.get('/logout', authController.logout);
+
+router.get('/account', authController.isLoggedIn, userController.account);
+router.post('/account', catchErrors(userController.updateAccount));
+router.get('/map', storeController.mapPage)
+
+/*
+ API ENDPOINTS
+*/
+
+router.get('/api/search', catchErrors(storeController.searchStores))
+router.get('/api/stores/near', catchErrors(storeController.mapStores))
+router.post('/api/stores/:id/heart', catchErrors(storeController.heartStore));
+
 
 module.exports = router;

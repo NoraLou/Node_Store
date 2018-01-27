@@ -60,8 +60,8 @@ exports.register = async (req, res, next) => {
 }
 
 exports.account = (req, res) => {
-  res.render('account', { title: 'Edit your account'})
-}
+  res.render('account', { title: 'Edit Your Account' });
+};
 
 exports.updateAccount = async (req, res) => {
   const updates = {
@@ -69,12 +69,13 @@ exports.updateAccount = async (req, res) => {
     email: req.body.email
   };
 
-  //mongoose
   const user = await User.findOneAndUpdate(
     { _id: req.user._id },
     { $set: updates },
-    { new: true, runValidators: true, context: 'query'}
+    { new: true, runValidators: true, context: 'query' }
   );
-  req.flash('success', 'Update the profile!')
-  res.redirect('back')
-}
+  req.flash('success', 'Updated the profile!');
+  res.redirect('back');
+};
+
+
